@@ -45,10 +45,21 @@
    ```
 
 3. **환경변수 설정**
-   `.env` 파일을 생성하고 OpenAI API 키를 설정하세요:
+   프로젝트 루트에 `.env` 파일을 생성하고 OpenAI API 키를 설정하세요:
+   ```bash
+   # .env 파일 생성
+   touch .env
+   
+   # .env 파일 편집 (텍스트 에디터 사용)
+   # 또는 다음 내용을 복사하여 .env 파일에 붙여넣기
+   ```
+   
+   `.env` 파일 내용:
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
    ```
+   
+   **⚠️ 중요**: `your_openai_api_key_here` 부분을 실제 OpenAI API 키로 교체하세요!
 
 ## 📁 폴더 구조
 
@@ -170,3 +181,24 @@ OCR_LANGUAGE=kor+eng
 ---
 
 **참고**: 이 프로그램은 OpenAI API를 사용하므로 사용량에 따른 비용이 발생할 수 있습니다.
+
+## 🚀 **첫 실행 가이드**
+
+1. **OpenAI API 키 준비**
+   - [OpenAI Platform](https://platform.openai.com/api-keys)에서 API 키 발급
+   - API 키는 `sk-...`로 시작하는 문자열입니다
+
+2. **환경 설정**
+   ```bash
+   # .env 파일 생성 및 편집
+   echo "OPENAI_API_KEY=your_actual_api_key" > .env
+   ```
+
+3. **프로그램 실행**
+   ```bash
+   python main.py
+   ```
+
+4. **이미지 준비**
+   - `original_notes/` 폴더에 처리할 이미지 파일을 넣으세요
+   - 지원 형식: JPG, JPEG, PNG, BMP, TIFF
