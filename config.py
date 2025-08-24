@@ -50,6 +50,8 @@ type: fleet
 ## Notes
 {notes}
 
+**원본 이미지**: ![[{image_link}]]
+
 ## Quotes
 
 
@@ -62,8 +64,6 @@ type: fleet
 - 
 
 ---
-**원본 이미지**: ![[{image_link}]]
-
 {tags}
 """
     

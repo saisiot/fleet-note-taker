@@ -106,7 +106,7 @@ type: fleet
 ## Links
 
 ---
-**원본 이미지**: ![메모원본](linked_notes/이미지파일명)
+**원본 이미지**: ![[linked_notes/이미지파일명.jpg]]
 
 #태그1 #태그2 #태그3
 ```
@@ -159,6 +159,38 @@ GENERATED_NOTES_DIR = os.path.join(os.getcwd(), 'generated_notes')
 - 현재 작업 디렉토리 하위에 자동으로 생성됩니다
 - `original_notes/`, `linked_notes/`, `generated_notes/`
 
+### 노트 구조
+생성되는 노트는 다음과 같은 구조를 가집니다:
+
+```markdown
+---
+title: 메모_제목
+created: 2025-08-15
+modification date: 2025-08-15
+type: fleet
+---
+- [ ] 작업하기
+
+## Notes
+메모 내용...
+
+**원본 이미지**: ![[linked_notes/이미지파일명.jpg]]
+
+## Quotes
+
+## Source
+
+## Links
+
+---
+#태그1 #태그2 #태그3
+```
+
+**특징:**
+- **Obsidian 내부 링크**: `![[파일명]]` 형식으로 원본 이미지 표시
+- **Notes 섹션 하단**: 원본 이미지가 메모 내용 바로 아래에 위치
+- **Fleet Note 형식**: Obsidian Fleet Note와 완벽 호환
+
 ## 🛠️ 기술 스택
 
 - **Python 3.8+**: 메인 프로그래밍 언어
@@ -167,6 +199,13 @@ GENERATED_NOTES_DIR = os.path.join(os.getcwd(), 'generated_notes')
 - **python-dotenv**: 환경변수 관리
 
 ## 📈 버전 히스토리
+
+### v1.1 (2025-08-24)
+- 🔄 **AI 응답 품질 자동 검증 및 재시도 기능**
+- 📁 **폴더 경로 커스터마이징** - config.py에서 직접 설정
+- 🖼️ **Obsidian 내부 링크 형식** - `![[파일명]]` 적용
+- 📝 **노트 구조 최적화** - 원본 이미지를 Notes 섹션 하단에 배치
+- 🎯 **처리 순서 개선** - 파일 이동 → 노트 생성으로 최적화
 
 ### v1.0 (2025-08-24)
 - 🎉 **Gemini 2.5 Flash-Lite 모델 적용**

@@ -18,57 +18,87 @@ class OCRProcessor:
         with open(image_path, "rb") as image_file:
             return base64.b64encode(image_file.read()).decode('utf-8')
     
-    def extract_text_and_analyze(self, image_path):
-        """이미지에서 텍스트 추출 및 LLM 분석"""
-        try:
-            if Config.LLM_PROVIDER == 'gemini':
-                # Gemini 모델 사용
-                image = Image.open(image_path)
-                prompt = self._get_analysis_prompt()
+    def extract_text_and_analyze(self, image_path, max_retries=3):
+        """이미지에서 텍스트 추출 및 LLM 분석 (최대 3번 재시도)"""
+        for attempt in range(max_retries):
+            try:
+                if attempt > 0:
+                    print(f"  - 재시도 {attempt}/{max_retries}...")
                 
-                response = self.model.generate_content([prompt, image])
-                
-                if response.text:
-                    return self._parse_llm_response(response.text)
+                if Config.LLM_PROVIDER == 'gemini':
+                    # Gemini 모델 사용
+                    image = Image.open(image_path)
+                    prompt = self._get_analysis_prompt()
+                    
+                    response = self.model.generate_content([prompt, image])
+                    
+                    if response.text:
+                        result = self._parse_llm_response(response.text)
+                        # 결과 검증: "내용 분석 중..."이 포함되어 있으면 재시도
+                        if result and result.get('notes') and '내용 분석 중' not in result['notes']:
+                            return result
+                        elif attempt < max_retries - 1:
+                            print(f"  - AI 응답 품질 부족, 재시도 예정...")
+                            continue
+                        else:
+                            print(f"  - 최대 재시도 횟수 도달, 현재 결과 반환")
+                            return result
+                    else:
+                        print("Gemini 응답이 비어있습니다.")
+                        if attempt < max_retries - 1:
+                            continue
+                        return None
                 else:
-                    print("Gemini 응답이 비어있습니다.")
-                    return None
-            else:
-                # OpenAI 모델 사용 (기존 코드)
-                base64_image = self.encode_image(image_path)
-                
-                response = self.client.chat.completions.create(
-                    model=Config.LLM_MODEL,
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": [
-                                {
-                                    "type": "text",
-                                    "text": self._get_analysis_prompt()
-                                },
-                                {
-                                    "type": "image_url",
-                                    "image_url": {
-                                        "url": f"data:image/jpeg;base64,{base64_image}"
+                    # OpenAI 모델 사용 (기존 코드)
+                    base64_image = self.encode_image(image_path)
+                    
+                    response = self.client.chat.completions.create(
+                        model=Config.LLM_MODEL,
+                        messages=[
+                            {
+                                "role": "user",
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": self._get_analysis_prompt()
+                                    },
+                                    {
+                                        "type": "image_url",
+                                        "image_url": {
+                                            "url": f"data:image/jpeg;base64,{base64_image}"
+                                        }
                                     }
-                                }
-                            ]
-                        }
-                    ],
-                    max_completion_tokens=1000
-                )
-                
-                if response.choices and len(response.choices) > 0:
-                    content = response.choices[0].message.content
-                    return self._parse_llm_response(content)
-                else:
-                    print("응답에 choices가 없습니다.")
-                    return None
+                                ]
+                            }
+                        ],
+                        max_completion_tokens=1000
+                    )
+                    
+                    if response.choices and len(response.choices) > 0:
+                        content = response.choices[0].message.content
+                        result = self._parse_llm_response(content)
+                        # 결과 검증: "내용 분석 중..."이 포함되어 있으면 재시도
+                        if result and result.get('notes') and '내용 분석 중' not in result['notes']:
+                            return result
+                        elif attempt < max_retries - 1:
+                            print(f"  - AI 응답 품질 부족, 재시도 예정...")
+                            continue
+                        else:
+                            print(f"  - 최대 재시도 횟수 도달, 현재 결과 반환")
+                            return result
+                    else:
+                        print("응답에 choices가 없습니다.")
+                        if attempt < max_retries - 1:
+                            continue
+                        return None
             
-        except Exception as e:
-            print(f"OCR 처리 중 오류 발생: {e}")
-            return None
+            except Exception as e:
+                print(f"OCR 처리 중 오류 발생: {e}")
+                if attempt < max_retries - 1:
+                    continue
+                return None
+        
+        return None
     
     def _get_analysis_prompt(self):
         """LLM에 보낼 프롬프트"""
