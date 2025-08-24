@@ -22,6 +22,9 @@ def main():
         Config.validate_config()
         Config.create_directories()
         
+        # 폴더 정보 출력
+        Config.print_directory_info()
+        
         # 컴포넌트 초기화
         ocr_processor = OCRProcessor()
         note_generator = NoteGenerator()
@@ -38,6 +41,7 @@ def main():
         if not pending_images:
             print("처리할 이미지가 없습니다.")
             print(f"'{Config.ORIGINAL_NOTES_DIR}' 폴더에 이미지를 넣어주세요.")
+            print(f"생성된 노트는 '{Config.GENERATED_NOTES_DIR}' 폴더에 저장됩니다.")
             return
         
         # 각 이미지 처리
@@ -57,18 +61,23 @@ def main():
                 failed_count += 1
                 continue
             
-            # 노트 생성
+            # 파일 이동
+            print("  - 파일 이동 중...")
+            moved_filename = file_manager.move_to_linked(image_path)
+            
+            if not moved_filename:
+                print("  ❌ 파일 이동 실패")
+                failed_count += 1
+                continue
+            
+            # 노트 생성 (이동된 파일명 전달)
             print("  - 노트 생성 중...")
-            note_path = note_generator.generate_note(analysis_result, filename)
+            note_path = note_generator.generate_note(analysis_result, filename, moved_filename)
             
             if not note_path:
                 print("  ❌ 노트 생성 실패")
                 failed_count += 1
                 continue
-            
-            # 파일 이동
-            print("  - 파일 이동 중...")
-            moved_filename = file_manager.move_to_linked(image_path)
             
             if moved_filename:
                 print(f"  ✅ 완료: {analysis_result['title']}")

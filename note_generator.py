@@ -6,7 +6,7 @@ class NoteGenerator:
     def __init__(self):
         pass
     
-    def generate_note(self, analysis_result, image_filename):
+    def generate_note(self, analysis_result, image_filename, moved_filename=None):
         """분석 결과를 바탕으로 마크다운 노트 생성"""
         try:
             # LLM에서 추출한 날짜 사용
@@ -26,8 +26,15 @@ class NoteGenerator:
             # 태그 문자열 생성 (해시태그 형식)
             tags_str = ' '.join([f'#{tag}' for tag in analysis_result['tags']])
             
-            # 이미지 링크 경로
-            image_link = f"linked_notes/{image_filename}"
+            # 이미지 링크 경로 - 이동된 파일명 사용
+            if moved_filename:
+                # Config.LINKED_NOTES_DIR의 상대 경로 계산
+                linked_dir_name = os.path.basename(Config.LINKED_NOTES_DIR)
+                image_link = f"{linked_dir_name}/{moved_filename}"
+            else:
+                # fallback: 원본 파일명 사용
+                linked_dir_name = os.path.basename(Config.LINKED_NOTES_DIR)
+                image_link = f"{linked_dir_name}/{image_filename}"
             
             # 템플릿에 데이터 삽입
             note_content = Config.FLEET_TEMPLATE.format(
@@ -44,7 +51,7 @@ class NoteGenerator:
             else:
                 filename = f"{current_date_compact}_{analysis_result['title']}.md"
             
-            filepath = os.path.join(Config.CURRENT_DIR, filename)
+            filepath = os.path.join(Config.GENERATED_NOTES_DIR, filename)
             
             # 파일 중복 확인 및 처리
             filepath = self._ensure_unique_filename(filepath)

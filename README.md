@@ -113,6 +113,7 @@ type: fleet
 
 ## 🔧 설정 옵션
 
+### 기본 설정
 `.env` 파일에서 다음 설정을 조정할 수 있습니다:
 
 ```env
@@ -120,6 +121,43 @@ GOOGLE_API_KEY=your_api_key
 MAX_TITLE_LENGTH=40
 SUPPORTED_IMAGE_FORMATS=jpg,jpeg,png,bmp,tiff
 ```
+
+### 폴더 경로 설정
+프로그램에서 사용하는 폴더 경로를 `config.py` 파일에서 직접 설정할 수 있습니다:
+
+**설정 방법:**
+1. `config.py` 파일을 열어주세요
+2. 파일 상단의 "폴더 경로 설정" 섹션을 찾아주세요
+3. 원하는 경로로 수정해주세요
+
+```python
+# ========================================
+# 폴더 경로 설정 - 여기서 직접 수정하세요!
+# ========================================
+
+# 원본 노트 폴더 (처리할 이미지 파일들)
+ORIGINAL_NOTES_DIR = os.path.join(os.getcwd(), 'original_notes')
+
+# 연결된 노트 폴더 (처리 완료된 이미지들)
+LINKED_NOTES_DIR = os.path.join(os.getcwd(), 'linked_notes')
+
+# 생성된 노트 폴더 (마크다운 파일들)
+GENERATED_NOTES_DIR = os.path.join(os.getcwd(), 'generated_notes')
+
+# 예시: 절대 경로로 설정하고 싶다면 아래처럼 주석을 해제하고 수정하세요
+# ORIGINAL_NOTES_DIR = '/Users/username/Documents/my_notes/original'
+# LINKED_NOTES_DIR = '/Users/username/Documents/my_notes/linked'
+# GENERATED_NOTES_DIR = '/Users/username/Documents/my_notes/generated'
+```
+
+**폴더 설명:**
+- `ORIGINAL_NOTES_DIR`: 처리할 이미지 파일들이 들어있는 폴더
+- `LINKED_NOTES_DIR`: 처리 완료된 이미지들이 이동되는 폴더  
+- `GENERATED_NOTES_DIR`: 생성된 마크다운 노트 파일들이 저장되는 폴더
+
+**기본값:**
+- 현재 작업 디렉토리 하위에 자동으로 생성됩니다
+- `original_notes/`, `linked_notes/`, `generated_notes/`
 
 ## 🛠️ 기술 스택
 
