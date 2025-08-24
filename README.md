@@ -24,8 +24,23 @@
    cd fleet_note_taker_2508
    ```
 
+**💡 빠른 시작 (macOS/Linux)**
+```bash
+# 가상환경 자동 활성화 및 상태 확인
+./activate.sh
+```
+
 2. **의존성 설치**
    ```bash
+   # 가상환경 생성
+   python -m venv venv
+   
+   # 가상환경 활성화
+   source venv/bin/activate  # macOS/Linux
+   # 또는
+   .\venv\Scripts\activate   # Windows
+   
+   # 패키지 설치
    pip install -r requirements.txt
    ```
 
@@ -41,12 +56,15 @@
 fleet_note_taker_2508/
 ├── original_notes/     # 처리할 이미지 파일들
 ├── linked_notes/       # 처리 완료된 이미지들
+├── venv/               # Python 가상환경
 ├── main.py             # 메인 실행 파일
 ├── config.py           # 설정 관리
 ├── ocr_processor.py    # OCR 및 AI 분석
 ├── note_generator.py   # 노트 생성
 ├── file_manager.py     # 파일 관리
-└── requirements.txt    # Python 의존성
+├── activate.sh         # 가상환경 활성화 스크립트
+├── requirements.txt    # Python 의존성
+└── README.md           # 프로젝트 문서
 ```
 
 ## 🎯 사용 방법
@@ -57,6 +75,12 @@ fleet_note_taker_2508/
 
 2. **프로그램 실행**
    ```bash
+   # 가상환경 활성화 (아직 활성화하지 않았다면)
+   source venv/bin/activate  # macOS/Linux
+   # 또는
+   .\venv\Scripts\activate   # Windows
+   
+   # 프로그램 실행
    python main.py
    ```
 
