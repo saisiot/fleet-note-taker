@@ -1,114 +1,97 @@
-# Fleet Note Generator
+# Fleet Note Generator v1.0
 
 손글씨 메모 이미지를 Obsidian Fleet Note로 자동 변환하는 Python 프로그램입니다.
 
-## 🚀 주요 기능
+**🚀 최신 업데이트: Gemini 2.5 Flash-Lite 모델 적용으로 성능 및 비용 효율성 대폭 향상!**
 
-- **자동 이미지 감지**: `original_notes/` 폴더의 이미지를 자동으로 감지
-- **AI 기반 텍스트 추출**: OpenAI GPT-4o-mini를 사용한 정확한 OCR 처리
-- **스마트 분석**: 메모 내용을 바탕으로 제목, 태그, 내용을 자동 생성
-- **Obsidian 호환**: Fleet Note 형식의 마크다운 파일 자동 생성
-- **파일 관리**: 처리 완료된 이미지를 자동으로 정리
+## ✨ 주요 기능
 
-## 📋 요구사항
+- **AI 기반 이미지 분석**: Gemini 2.5 Flash-Lite를 사용한 정확한 손글씨 인식
+- **자동 노트 생성**: Fleet Note 형식의 마크다운 파일 자동 생성
+- **스마트 태그 생성**: 메모 내용 기반 자동 태그 생성
+- **파일 관리**: 처리 완료된 이미지 자동 정리
+- **macOS/Obsidian 호환**: 모든 특수문자 자동 정제
 
-- Python 3.8 이상
-- OpenAI API 키
-- 인터넷 연결
+## 🎯 사용 사례
 
-## 🛠️ 설치 방법
+- 📝 **손글씨 메모 디지털화**: 물리적 메모를 Obsidian 노트로 변환
+- 🏥 **의료 기록**: 병원 입원 중 메모 정리
+- 💼 **업무 노트**: 회의 메모 및 아이디어 정리
+- 📚 **학습 노트**: 공부 메모 및 요약 정리
 
-1. **저장소 클론**
-   ```bash
-   git clone <repository-url>
-   cd fleet_note_taker_2508
-   ```
-
-**💡 빠른 시작 (macOS/Linux)**
-```bash
-# 가상환경 자동 활성화 및 상태 확인
-./activate.sh
-```
-
-2. **의존성 설치**
-   ```bash
-   # 가상환경 생성
-   python -m venv venv
-   
-   # 가상환경 활성화
-   source venv/bin/activate  # macOS/Linux
-   # 또는
-   .\venv\Scripts\activate   # Windows
-   
-   # 패키지 설치
-   pip install -r requirements.txt
-   ```
-
-3. **환경변수 설정**
-   프로젝트 루트에 `.env` 파일을 생성하고 OpenAI API 키를 설정하세요:
-   ```bash
-   # .env 파일 생성
-   touch .env
-   
-   # .env 파일 편집 (텍스트 에디터 사용)
-   # 또는 다음 내용을 복사하여 .env 파일에 붙여넣기
-   ```
-   
-   `.env` 파일 내용:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
-   
-   **⚠️ 중요**: `your_openai_api_key_here` 부분을 실제 OpenAI API 키로 교체하세요!
-
-## 📁 폴더 구조
+## 🏗️ 아키텍처
 
 ```
 fleet_note_taker_2508/
 ├── original_notes/     # 처리할 이미지 파일들
 ├── linked_notes/       # 처리 완료된 이미지들
-├── venv/               # Python 가상환경
 ├── main.py             # 메인 실행 파일
 ├── config.py           # 설정 관리
-├── ocr_processor.py    # OCR 및 AI 분석
+├── ocr_processor.py    # AI 이미지 분석
 ├── note_generator.py   # 노트 생성
 ├── file_manager.py     # 파일 관리
-├── activate.sh         # 가상환경 활성화 스크립트
-├── requirements.txt    # Python 의존성
-└── README.md           # 프로젝트 문서
+└── requirements.txt    # Python 의존성
 ```
 
-## 🎯 사용 방법
+## 🚀 빠른 시작
 
-1. **이미지 준비**
-   - `original_notes/` 폴더에 처리할 이미지 파일을 넣으세요
-   - 지원 형식: JPG, JPEG, PNG, BMP, TIFF
+### 1. 저장소 클론
+```bash
+git clone <repository-url>
+cd fleet_note_taker_2508
+```
 
-2. **프로그램 실행**
-   ```bash
-   # 가상환경 활성화 (아직 활성화하지 않았다면)
-   source venv/bin/activate  # macOS/Linux
-   # 또는
-   .\venv\Scripts\activate   # Windows
-   
-   # 프로그램 실행
-   python main.py
-   ```
+### 2. 가상환경 설정
+```bash
+# 가상환경 생성
+python -m venv venv
 
-3. **결과 확인**
-   - 생성된 마크다운 노트는 프로젝트 루트에 저장됩니다
-   - 처리 완료된 이미지는 `linked_notes/` 폴더로 이동됩니다
+# 가상환경 활성화
+source venv/bin/activate  # macOS/Linux
+# 또는
+.\venv\Scripts\activate   # Windows
+```
+
+### 3. 의존성 설치
+```bash
+pip install -r requirements.txt
+```
+
+### 4. API 키 설정
+`.env` 파일을 생성하고 Google AI API 키를 설정하세요:
+```env
+GOOGLE_API_KEY=your_google_api_key_here
+```
+
+### 5. 프로그램 실행
+```bash
+python main.py
+```
+
+## 📊 모델 성능 비교
+
+| 모델 | 비용 (1M 토큰) | 성능 | 특징 |
+|------|----------------|------|------|
+| **Gemini 2.5 Flash-Lite** | $0.10 / $0.40 | ⭐⭐⭐⭐⭐ | **현재 사용 중** - 최고의 비용 효율성 |
+| GPT-4o-mini | $0.15 / $0.60 | ⭐⭐⭐⭐ | 이전 모델 - 33% 더 비쌈 |
+| GPT-4o | $0.25 / $1.00 | ⭐⭐⭐⭐⭐ | 고성능이지만 비쌈 |
+
+## 💰 비용 계산
+
+### **이미지당 예상 비용 (Gemini 2.5 Flash-Lite)**
+- **입력 토큰**: ~3,000 토큰
+- **출력 토큰**: ~225 토큰
+- **1개 이미지**: 약 **$0.0009** (약 1.2원)
+- **100개 이미지**: 약 **$0.09** (약 120원)
+- **1000개 이미지**: 약 **$0.90** (약 1,200원)
 
 ## 📝 생성되는 노트 형식
 
 ```markdown
 ---
 title: 메모_제목
-created: 2024-01-15
-modification date: 2024-01-15
-source: 
-aliases: 
-tags: [태그1, 태그2, 태그3]
+created: 2025-08-15
+modification date: 2025-08-15
 type: fleet
 ---
 - [ ] 작업하기
@@ -119,48 +102,46 @@ type: fleet
 ## Quotes
 
 ## Source
-- 
 
 ## Links
-- 
 
 ---
 **원본 이미지**: ![메모원본](linked_notes/이미지파일명)
+
+#태그1 #태그2 #태그3
 ```
 
-## ⚙️ 설정 옵션
+## 🔧 설정 옵션
 
 `.env` 파일에서 다음 설정을 조정할 수 있습니다:
 
 ```env
-OPENAI_API_KEY=your_api_key
+GOOGLE_API_KEY=your_api_key
 MAX_TITLE_LENGTH=40
 SUPPORTED_IMAGE_FORMATS=jpg,jpeg,png,bmp,tiff
-OCR_LANGUAGE=kor+eng
 ```
 
-## 🔧 문제 해결
+## 🛠️ 기술 스택
 
-### 일반적인 오류
+- **Python 3.8+**: 메인 프로그래밍 언어
+- **Google Generative AI**: Gemini 2.5 Flash-Lite 모델
+- **Pillow**: 이미지 처리
+- **python-dotenv**: 환경변수 관리
 
-1. **API 키 오류**
-   - `.env` 파일에 올바른 OpenAI API 키가 설정되어 있는지 확인
-   - API 키가 유효한지 확인
+## 📈 버전 히스토리
 
-2. **이미지 처리 실패**
-   - 지원되는 이미지 형식인지 확인
-   - 이미지 파일이 손상되지 않았는지 확인
+### v1.0 (2025-08-24)
+- 🎉 **Gemini 2.5 Flash-Lite 모델 적용**
+- 🚀 **비용 33% 절약** (GPT-4o-mini 대비)
+- ✨ **성능 대폭 향상** - 더 정확한 손글씨 인식
+- 🧹 **코드 최적화** - 불필요한 부분 제거
+- 🏷️ **태그 시스템 개선** - 해시태그 형태로 변경
+- 📅 **날짜 파싱 정확도 향상**
+- 🖥️ **macOS/Obsidian 호환성** - 모든 특수문자 자동 정제
 
-3. **권한 오류**
-   - 폴더에 쓰기 권한이 있는지 확인
-
-## 📊 처리 통계
-
-프로그램 실행 시 다음 정보를 확인할 수 있습니다:
-- 처리 대기 중인 이미지 수
-- 처리 완료된 이미지 수
-- 각 이미지별 처리 진행 상황
-- 최종 성공/실패 통계
+### v0.9 (이전)
+- OpenAI GPT-4o-mini 모델 사용
+- 기본 OCR 및 노트 생성 기능
 
 ## 🤝 기여하기
 
@@ -172,7 +153,7 @@ OCR_LANGUAGE=kor+eng
 
 ## 📄 라이선스
 
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+이 프로젝트는 MIT 라이선스 하에 배포됩니다.
 
 ## 📞 문의
 
@@ -180,25 +161,4 @@ OCR_LANGUAGE=kor+eng
 
 ---
 
-**참고**: 이 프로그램은 OpenAI API를 사용하므로 사용량에 따른 비용이 발생할 수 있습니다.
-
-## 🚀 **첫 실행 가이드**
-
-1. **OpenAI API 키 준비**
-   - [OpenAI Platform](https://platform.openai.com/api-keys)에서 API 키 발급
-   - API 키는 `sk-...`로 시작하는 문자열입니다
-
-2. **환경 설정**
-   ```bash
-   # .env 파일 생성 및 편집
-   echo "OPENAI_API_KEY=your_actual_api_key" > .env
-   ```
-
-3. **프로그램 실행**
-   ```bash
-   python main.py
-   ```
-
-4. **이미지 준비**
-   - `original_notes/` 폴더에 처리할 이미지 파일을 넣으세요
-   - 지원 형식: JPG, JPEG, PNG, BMP, TIFF
+**참고**: 이 프로그램은 Google AI API를 사용하므로 사용량에 따른 비용이 발생할 수 있습니다.
