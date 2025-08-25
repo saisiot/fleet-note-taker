@@ -1,5 +1,7 @@
 # Fleet Note Generator v1.0
 
+![앱 소개 이미지](./fleet_title.png)
+
 손글씨 메모 이미지를 Obsidian Fleet Note로 자동 변환하는 Python 프로그램입니다.
 
 **🚀 최신 업데이트: Gemini 2.5 Flash-Lite 모델 적용으로 성능 및 비용 효율성 대폭 향상!**
