@@ -13,6 +13,8 @@
 - **스마트 태그 생성**: 메모 내용 기반 자동 태그 생성
 - **파일 관리**: 처리 완료된 이미지 자동 정리
 - **macOS/Obsidian 호환**: 모든 특수문자 자동 정제
+- **🆕 네트워크 분석**: 00 Notes 폴더의 노트 관계 분석 및 DB 구축
+- **🆕 지능형 링크 추천**: TF-IDF 기반 콘텐츠 유사도로 관련 노트 자동 링크
 
 ## 🎯 사용 사례
 
@@ -69,6 +71,24 @@ GOOGLE_API_KEY=your_google_api_key_here
 ```bash
 python main.py
 ```
+
+#### 🔄 통합 워크플로우
+프로그램은 다음 3단계로 자동 실행됩니다:
+
+1. **이미지 → Fleet Note 변환**
+   - `original_notes/` 폴더의 이미지를 OCR 분석
+   - Fleet Note 형식의 마크다운 파일 생성
+   - 처리된 이미지를 `linked_notes/`로 이동
+
+2. **네트워크 분석 및 DB 업데이트**
+   - `00 Notes` 폴더의 모든 노트 스캔
+   - 링크 관계, 태그, 메타데이터 분석
+   - SQLite DB (`obsidian_network.db`) 생성/업데이트
+
+3. **Fleet Note 링크 자동 추가**
+   - 새로 생성된 Fleet Note와 유사한 노트 3개 추천
+   - TF-IDF 콘텐츠 유사도 + 태그 유사도 기반
+   - Links 섹션에 자동으로 추가
 
 ## 📊 모델 성능 비교
 
@@ -200,8 +220,17 @@ tags: [태그1, 태그2, 태그3]
 - **Google Generative AI**: Gemini 2.5 Flash-Lite 모델
 - **Pillow**: 이미지 처리
 - **python-dotenv**: 환경변수 관리
+- **🆕 scikit-learn**: TF-IDF 벡터화 및 코사인 유사도 계산
+- **🆕 PyYAML**: YAML frontmatter 파싱
+- **🆕 SQLite**: 노트 네트워크 데이터베이스
 
 ## 📈 버전 히스토리
+
+### v1.3 (2025-09-27)
+- 🤖 **지능형 네트워크 분석** - 00 Notes 폴더 스캔 및 SQLite DB 구축
+- 🔗 **자동 링크 추천** - TF-IDF 기반 콘텐츠 유사도로 관련 노트 자동 연결
+- 🔄 **통합 워크플로우** - OCR → 네트워크 분석 → 링크 추천 3단계 자동화
+- 📊 **ML 기반 분석** - scikit-learn을 활용한 고도화된 텍스트 분석
 
 ### v1.2 (2025-09-27)
 - 🏷️ **태그 시스템 개선** - 해시태그를 YAML 메타데이터로 이동

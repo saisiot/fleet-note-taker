@@ -10,6 +10,8 @@ from config import Config
 from ocr_processor import OCRProcessor
 from note_generator import NoteGenerator
 from file_manager import FileManager
+from network_analyzer import update_notes_network
+from note_recommender import add_fleet_note_links
 
 def main():
     """메인 실행 함수"""
@@ -47,51 +49,78 @@ def main():
         # 각 이미지 처리
         processed_count = 0
         failed_count = 0
-        
+        newly_created_notes = []  # 새로 생성된 노트들 추적
+
         for i, image_path in enumerate(pending_images, 1):
             filename = os.path.basename(image_path)
             print(f"\n[{i}/{len(pending_images)}] 처리 중: {filename}")
-            
+
             # OCR 및 LLM 분석
             print("  - 이미지 분석 중...")
             analysis_result = ocr_processor.extract_text_and_analyze(image_path)
-            
+
             if not analysis_result:
                 print("  ❌ 분석 실패")
                 failed_count += 1
                 continue
-            
+
             # 파일 이동
             print("  - 파일 이동 중...")
             moved_filename = file_manager.move_to_linked(image_path)
-            
+
             if not moved_filename:
                 print("  ❌ 파일 이동 실패")
                 failed_count += 1
                 continue
-            
+
             # 노트 생성 (이동된 파일명 전달)
             print("  - 노트 생성 중...")
             note_path = note_generator.generate_note(analysis_result, filename, moved_filename)
-            
+
             if not note_path:
                 print("  ❌ 노트 생성 실패")
                 failed_count += 1
                 continue
-            
+
             if moved_filename:
                 print(f"  ✅ 완료: {analysis_result['title']}")
                 processed_count += 1
+                newly_created_notes.append(note_path)  # 새로 생성된 노트 추가
             else:
                 print("  ❌ 파일 이동 실패")
                 failed_count += 1
         
         # 결과 요약
         print("\n" + "=" * 50)
-        print("처리 완료!")
+        print("1단계: 이미지 → Fleet Note 생성 완료!")
         print(f"성공: {processed_count}개")
         print(f"실패: {failed_count}개")
         print("=" * 50)
+
+        if processed_count > 0:
+            # 2단계: 00 Notes 네트워크 업데이트
+            print("\n" + "=" * 50)
+            print("2단계: 00 Notes 네트워크 업데이트 시작")
+            print("=" * 50)
+
+            try:
+                if update_notes_network():
+                    print("네트워크 분석 완료!")
+
+                    # 3단계: 새로 생성된 Fleet Note에만 추천 링크 추가
+                    print("\n" + "=" * 50)
+                    print("3단계: Fleet Note 링크 추천 시작")
+                    print("=" * 50)
+
+                    if add_fleet_note_links(target_files=newly_created_notes):
+                        print("모든 단계 완료!")
+                    else:
+                        print("링크 추천 실패")
+                else:
+                    print("네트워크 업데이트 실패")
+            except Exception as e:
+                print(f"추가 처리 중 오류 발생: {e}")
+                print("기본 OCR 처리는 완료되었습니다.")
         
     except ValueError as e:
         print(f"설정 오류: {e}")
