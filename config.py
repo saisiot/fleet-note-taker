@@ -41,9 +41,10 @@ class Config:
 title: {title}
 created: {created_date}
 modification date: {created_date}
-source: 
-aliases: 
+source:
+aliases:
 type: fleet
+tags: {tags}
 ---
 - [ ] 작업하기
 
@@ -57,14 +58,13 @@ type: fleet
 
 
 ## Source
-- 
+-
 
 
 ## Links
-- 
+-
 
 ---
-{tags}
 """
     
     @classmethod

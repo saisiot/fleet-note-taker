@@ -23,8 +23,8 @@ class NoteGenerator:
                 current_date = datetime.now().strftime('%Y-%m-%d')
                 current_date_compact = datetime.now().strftime('%Y%m%d')
             
-            # 태그 문자열 생성 (해시태그 형식)
-            tags_str = ' '.join([f'#{tag}' for tag in analysis_result['tags']])
+            # 태그 문자열 생성 (메타데이터용 - 쉼표로 구분, # 제거)
+            tags_str = '[' + ', '.join(analysis_result['tags']) + ']'
             
             # 이미지 링크 경로 - 이동된 파일명 사용
             if moved_filename:
